@@ -1,9 +1,10 @@
 // by RanzigenDanny
 // CompsExporter
-// v8
+// v9
 
 // GUIDE
-// exports the selected comps as jpg or png to your chosen location
+// exports the selected comps as .jpg or .png to your chosen location, image name is the same as the comp name
+// if the comp name contains a file path (folder/imageName) then the folder will be created
 
 //@include "functions/dialogPlus.jsx"
 //@include "functions/saveFunctions.jsx"

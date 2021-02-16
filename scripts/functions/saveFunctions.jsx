@@ -1,6 +1,6 @@
 // by RanzigenDanny
 // saveFunctions
-// v17
+// v18
 
 // GUIDE
 
@@ -68,8 +68,8 @@ function createFolderIfNeeded(folderNameAddition, folderName, myPath) {
 
 	// check the given variables
 	if(typeof folderNameAddition === 'undefined')	folderNameAddition = "";
-	if(typeof folderName === 'undefined')			folderName = app.activeDocument.name;
-	if(typeof myPath === 'undefined')					myPath = app.activeDocument.path;
+	if(typeof folderName === 'undefined')			    folderName = app.activeDocument.name;
+	if(typeof myPath === 'undefined')					    myPath = app.activeDocument.path;
 
 	// remove the .psd from the file
 	folderName = removeExtention(folderName);
@@ -404,7 +404,6 @@ function saveFilesAs_SingleImage(options, sliceGroups) {
 	else 																																																										options["jpgBlur"] = Number(options["jpgBlur"]);
 	if( options["slicegroup"] == "false" || typeof options["slicegroup"] === "undefined")  																	options["slicegroup"] = false;
 
-
 	// if the user did not specify any slice group or groups we must look trough every layer to find the right one
 	// !!! gatherArtLayers() on every images when we export multiple images at the same time is very bad pratice
 	var lookTroughLayers = [];
@@ -479,7 +478,7 @@ function saveFilesAs_SingleImage(options, sliceGroups) {
 		// make a new document
 		// updateProgressWindow('CS4 workaround: make a new document');
 		var resolution = 72;
-		var name = 'ranzScript temp file for ' + options["image"];
+		var name = 'ranzScript temp file for ' + options["image"].replace('/', '_');
 		var docMode = NewDocumentMode.RGB;
 		if 		 ((options["mode"] == 'cmyk')) 				docMode = NewDocumentMode.CMYK;
 		else if (options["mode"] == 'greyscale') 		docMode = NewDocumentMode.GRAYSCALE;
@@ -597,8 +596,16 @@ function saveFilesAs_SingleImage(options, sliceGroups) {
 
 	//**********************************************
 
-	// make the save folder
-	var saveFile = new File(options["path"] + '/' + options["image"]);
+  // create the save file
+  var savePath = options["path"] + '/' + options["image"]
+  var saveFile = new File(savePath);
+
+  // check if the save location exists and make the folder if needed
+  // this way we can put '/' in the filename and the image will be saved in the correct folder
+  removeEverythingAfterLastSlash = savePath.substr(0, savePath.lastIndexOf("\/")) // remove everythignb after the last slash. if filname is 'folder1/folder2/image.jpg' we need to check for the folder 'folder1/folder2'
+  var newSaveFolder = new Folder(removeEverythingAfterLastSlash);
+	if(!newSaveFolder.exists) newSaveFolder.create();
+
 
 	// choose what type of save we wont
 	if(extention == ".psd" || extention == ".PSD") {
