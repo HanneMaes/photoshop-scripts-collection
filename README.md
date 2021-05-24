@@ -1,2 +1,2 @@
 # Photoshop scripts collection
-My collection of (mostly) home-brew Photoshop scripts
+My collection of (mostly) home-brew Photoshop scripts.
